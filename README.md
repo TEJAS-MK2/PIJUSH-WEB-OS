@@ -21,3 +21,7 @@ Serve the repository with any static HTTP server, for example: python3 -m http.s
 
 ## License
 MIT
+
+## WebKernel
+
+PIJUSH OS now has a browser-native kernel layer with an event bus, process manager, app registry, and IndexedDB-backed virtual filesystem. The desktop consumes these services instead of directly owning filesystem state.
