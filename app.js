@@ -43,5 +43,5 @@ document.addEventListener("click",e=>{if(!e.target.closest("#context-menu"))$("#
 function clock(){const d=new Date();$("#clock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});$("#top-status").textContent=navigator.onLine?"Online":"Offline"}
 const bootWatchdog=setTimeout(()=>{if(!$("#boot").classList.contains("done")){$("#boot .boot-status").textContent="Startup is taking longer than expected. Please reload once.";console.error("PIJUSH OS boot watchdog: kernel readiness has not completed.")}},10000);kernelReady.then(()=>{clearTimeout(bootWatchdog);renderApps();clock();setInterval(clock,1000);setTimeout(()=>{$("#boot").classList.add("done");openApp("monitor");if(kernel.fs.storageError)notify("Temporary storage mode","Browser storage failed. Files may not persist until the page is reloaded.")},700)}).catch(error=>{clearTimeout(bootWatchdog);console.error("PIJUSH OS startup failed",error);$("#boot .boot-status").textContent="Startup failed. Reload the page and try again.";});
 window.addEventListener("online",()=>notify("Network","Connection restored."));window.addEventListener("offline",()=>notify("Network","Offline mode active."));
-if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});
+// Service worker registration is temporarily disabled while stale-cache recovery is deployed.
 })();
