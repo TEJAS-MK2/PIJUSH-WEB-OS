@@ -137,3 +137,48 @@ body{background:#245edb;color:var(--text)}
 .catalog-item{background:#f8f7f1;border:1px solid #b8c8d8;border-radius:3px;color:#172b43}
 .catalog-item .muted,.catalog-item small{color:#53677b}
 @media(max-width:600px){.dock .xp-start{margin-right:0;min-width:82px}.dock{gap:2px;padding-left:4px;padding-right:4px}}
+
+/* Authentic XP shell pass — classic Luna proportions, not a floating modern dock */
+:root{font-family:Tahoma,"Segoe UI",Arial,sans-serif;--xp-blue:#245edb;--xp-blue-dark:#0c3e9c;--xp-border:#003c74;--xp-panel:#f1f1f1;--xp-text:#111}
+html,body{background:#1673ce;color:var(--xp-text);font-family:Tahoma,"Segoe UI",Arial,sans-serif}
+.desktop{isolation:isolate}
+.wallpaper{inset:0;background:radial-gradient(ellipse 12% 3% at 77% 23%,rgba(255,255,255,.92) 0 45%,transparent 50%),radial-gradient(ellipse 8% 2.4% at 20% 19%,rgba(255,255,255,.86) 0 48%,transparent 53%),linear-gradient(177deg,transparent 0 52%,rgba(232,246,255,.95) 52.2% 53.8%,transparent 54%),linear-gradient(166deg,transparent 0 54%,#b5d96a 54.2% 60%,#74b832 60.2% 67%,#378d26 67.2% 75%,#22651d 75.2%),linear-gradient(180deg,#0878d4 0%,#29a4ef 32%,#91d7fa 50%,#d9f0ff 56%,#8ecbfa 59%,#4b9d2b 60%,#2d7d22 100%)}
+:root[data-wallpaper="bliss"] .wallpaper{background:radial-gradient(ellipse 10% 2.5% at 75% 23%,rgba(255,255,255,.92) 0 45%,transparent 50%),radial-gradient(ellipse 7% 1.8% at 78% 22%,rgba(255,255,255,.88) 0 45%,transparent 50%),radial-gradient(ellipse 8% 2% at 20% 18%,rgba(255,255,255,.84) 0 45%,transparent 50%),linear-gradient(174deg,transparent 0 55%,#b9d96c 55.2% 60%,#76b735 60.2% 67%,#3b8d25 67.2% 75%,#23671d 75.2%),linear-gradient(180deg,#0879d5 0%,#2ca5ed 35%,#9bdafa 51%,#e2f5ff 55%,#8dc9f2 59%,#66a82f 60%,#327e20 100%)}
+.topbar{display:none}
+.windows{inset:0 0 38px;z-index:10}
+.desktop-shortcuts{top:10px;left:8px;gap:8px}
+.desktop-shortcuts button{min-height:76px;width:88px;border-radius:0;text-shadow:1px 1px 2px #183a57;font-family:Tahoma,Arial,sans-serif}
+.desktop-shortcuts button span{font-size:32px}
+.desktop-shortcuts button:focus-visible,.desktop-shortcuts button:hover{background:rgba(20,91,185,.42);outline:1px dotted #fff}
+.window{width:min(760px,calc(100vw - 24px));height:min(540px,calc(100vh - 70px));min-width:280px;min-height:210px;border:1px solid #003c74;border-radius:8px 8px 3px 3px;background:#ece9d8;box-shadow:2px 3px 10px rgba(0,20,70,.5)}
+.titlebar{height:30px;flex-basis:30px;background:linear-gradient(180deg,#3c91ff 0%,#2477ed 8%,#1764d8 48%,#0b55c5 49%,#3479e2 100%);border-bottom:1px solid #0647a5;padding:0 7px}
+.title{font-size:12px;font-weight:bold}
+.win-controls button{width:22px;height:22px;border-radius:4px;border:1px solid #fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);font-family:Tahoma,Arial,sans-serif;font-size:14px;font-weight:bold}
+.win-controls button:first-child,.win-controls button:nth-child(2){background:linear-gradient(#70b4ff,#1d63d4)}
+.win-controls button:last-child{background:linear-gradient(#ffb29d,#d83219)}
+.window-body{background:#ece9d8}
+.dock{height:38px;bottom:0;left:0;right:0;width:100%;transform:none;justify-content:flex-start;gap:3px;padding:3px 6px 3px 0;background:linear-gradient(180deg,#3d83ef 0%,#245edb 35%,#1747b8 100%);border:0;border-top:1px solid #74a8ff;border-radius:0;box-shadow:0 -1px 2px rgba(0,0,0,.25);z-index:70}
+.dock button{height:30px;width:42px;flex:0 0 auto;border:1px solid transparent;border-radius:2px;background:linear-gradient(180deg,#3f7ce2,#1b4eae);font-size:17px;color:#fff;text-shadow:1px 1px #153879}
+.dock button:hover,.dock button.running{outline:1px solid #9cc4ff;background:linear-gradient(#5a9cf3,#2259bd)}
+.dock .xp-start{height:35px;min-width:112px;margin-top:-1px;margin-right:5px;padding:0 17px 0 13px;border:1px solid #5f9d4b;border-left:0;border-radius:0 16px 16px 0;background:linear-gradient(180deg,#8fdb75 0%,#42a72c 42%,#16751a 100%);box-shadow:inset 0 1px rgba(255,255,255,.6),1px 0 3px rgba(0,0,0,.2);font-size:16px;font-style:italic;font-weight:bold;text-align:left}
+.dock .xp-start:before{content:"";display:inline-block;width:14px;height:14px;margin-right:5px;vertical-align:-2px;border-radius:2px;background:linear-gradient(135deg,#f8e74c 0 25%,#ef3d31 25% 50%,#4c9cff 50% 75%,#5ac34a 75%);box-shadow:0 0 0 1px rgba(255,255,255,.6)}
+.dock .tray-spacer{flex:1}
+.dock .tray-network{width:auto;min-width:78px;padding:0 8px;font-size:10px;font-family:Tahoma,Arial,sans-serif}
+.dock #clock{display:flex;align-items:center;align-self:stretch;min-width:76px;justify-content:center;margin-left:2px;padding:0 9px;color:#fff;font:11px Tahoma,Arial,sans-serif;text-shadow:1px 1px #123b7d;background:linear-gradient(180deg,#1b55c1,#2e71dc);border-left:1px solid #1446a3;white-space:nowrap}
+.launcher{left:0;bottom:38px;width:min(470px,calc(100vw - 8px));padding:0;display:grid;grid-template-columns:minmax(0,1fr) 155px;gap:0;background:#f4f4f4;border:2px solid #1555bd;border-bottom:0;border-radius:7px 7px 0 0;box-shadow:3px -3px 12px rgba(0,0,0,.35);overflow:hidden}
+.launcher-head{grid-column:1/-1;padding:12px;background:linear-gradient(180deg,#287de5,#0d50b3);border-bottom:2px solid #e9e9e9}
+.launcher-head input{height:30px;padding:5px 8px;background:#fff;border:1px solid #8ba4bd;border-radius:2px;color:#111;font:12px Tahoma,Arial,sans-serif}
+.app-grid{grid-column:1;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:2px;padding:7px;background:#fff;margin:0;max-height:min(54vh,420px);overflow:auto}
+.app-card{display:flex;align-items:center;gap:9px;text-align:left;min-height:42px;padding:5px;border:1px solid transparent;border-radius:2px;color:#111;font-family:Tahoma,Arial,sans-serif}
+.app-card:hover{background:#dcecff;border-color:#9fc6ff}
+.app-icon{flex:0 0 28px;font-size:23px;margin:0;text-align:center}
+.app-name{font-size:11px;line-height:1.25}
+.start-links{grid-column:2;grid-row:2;padding:8px 6px;background:linear-gradient(180deg,#d6e8fa,#eef5fc);border-left:1px solid #b6cce2;display:flex;flex-direction:column;gap:3px}
+.start-links button{display:flex;align-items:center;gap:7px;min-height:32px;padding:4px 6px;text-align:left;border:1px solid transparent;background:transparent;color:#173b65;font:11px Tahoma,Arial,sans-serif;cursor:pointer}
+.start-links button:hover{background:#cfe4fa;border-color:#91b8df}
+.start-links button span{width:24px;text-align:center;font-size:19px}
+.context-menu{border:1px solid #7f9db9;border-radius:0;background:#fff;box-shadow:2px 3px 6px #555}
+.toast{border-radius:3px;background:#fffbe7;color:#24364b;border:1px solid #c5a84e}
+.xp-page{font-family:Tahoma,Arial,sans-serif}
+@media(max-width:600px){.desktop-shortcuts{top:8px;left:5px;gap:3px}.desktop-shortcuts button{width:75px;min-height:68px}.desktop-shortcuts button span{font-size:28px}.dock{height:40px}.windows{bottom:40px}.dock .xp-start{min-width:85px;padding-left:9px;font-size:14px}.dock button{width:34px;font-size:15px}.dock .tray-network{display:none}.dock #clock{min-width:58px;font-size:10px;padding:0 5px}.launcher{bottom:40px;width:min(calc(100vw - 4px),470px);grid-template-columns:minmax(0,1fr) 112px}.app-grid{grid-template-columns:1fr;max-height:48vh}.app-card{min-height:36px}.app-icon{font-size:20px}.start-links button{font-size:10px;padding:3px}.window{height:calc(100vh - 58px);width:calc(100vw - 12px);left:6px!important;top:6px!important}}
+@media(max-width:370px){.dock button:nth-of-type(n+5):not(.xp-start):not(.tray-network){display:none}.start-links{padding:4px}.launcher{grid-template-columns:minmax(0,1fr) 100px}}
