@@ -60,7 +60,7 @@ test("Notepad saves workspace content locally and keeps it after reload", async 
   await win.locator("[data-save]").click();
   await expect(page.locator("#notifications")).toContainText("Saved notes.txt locally");
 
-  await page.reload();
+  await page.goto("/?nosw=1");
   await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
   await openFromStart(page, "Notepad");
   await expect(page.locator('.window[data-app="editor"] textarea')).toHaveValue(marker);
