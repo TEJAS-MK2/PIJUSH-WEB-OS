@@ -11,7 +11,8 @@ A browser-based desktop environment built with vanilla HTML, CSS, and JavaScript
 ### Desktop and built-in apps
 - Desktop interface with application launcher and dock
 - Window controls: move, minimize, maximize, and close
-- File Manager and virtual workspace
+- Functional XP-style File Manager with folder navigation, create, rename, copy, move, delete, and Notepad integration
+- IndexedDB-backed virtual workspace with validated paths and restore operations
 - Text Editor, Terminal, and Calculator
 - System Monitor and System Center
 - Settings, Developer Mode, App Store, Display Properties, User Profile, Storage Center, Browser, and Desktop Gadgets
@@ -94,7 +95,8 @@ npm run check
 ```
 
 - `npm test` runs the Node.js test suite in `tests/`.
-- `npm run check` performs JavaScript syntax checks on the application, kernel, package manager, recovery module, System Center, and XP desktop suite.
+- `npm run check` performs JavaScript syntax checks on the application, kernel, package manager, recovery module, System Center, service worker, browser-test server, and XP desktop suite.
+- `npm run test:e2e` runs Playwright browser tests for desktop boot, window management, local Notepad persistence, File Manager operations, and mobile layout.
 
 ## Deployment
 

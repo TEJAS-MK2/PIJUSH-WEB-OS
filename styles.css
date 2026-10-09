@@ -205,3 +205,38 @@ html,body{background:#1673ce;color:var(--xp-text);font-family:Tahoma,"Segoe UI",
 .task-window.selected{background:linear-gradient(#123e93,#1e55b7)!important;box-shadow:inset 1px 1px 3px rgba(0,0,0,.4);border-color:#0c347f!important}
 .task-window.minimized{opacity:.8}
 @media(max-width:600px){.task-buttons{max-width:32vw}.task-window{min-width:64px;max-width:90px;padding:0 4px!important;font-size:10px!important}}
+
+
+/* File Explorer controls and selection states */
+.xp-explorer{grid-template-columns:160px minmax(0,1fr);min-width:0;background:#f4f7fb;color:#172b43;font:12px Tahoma,Arial,sans-serif}
+.explorer-sidebar{display:flex;flex-direction:column;gap:5px;background:linear-gradient(180deg,#e8f1fb,#dbe8f6);padding:12px 8px}
+.explorer-sidebar>b{padding:4px 7px 8px;color:#245edb}
+.explorer-place{border:1px solid transparent;background:transparent;color:#24415f;text-align:left;border-radius:3px;padding:8px;cursor:pointer;font:12px Tahoma,Arial,sans-serif}
+.explorer-place:hover,.explorer-place:focus-visible{background:#fff;border-color:#9db9d7;outline:none}
+.explorer-main{display:flex;flex-direction:column;min-width:0;min-height:0;padding:10px;background:#fff}
+.explorer-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:5px;padding-bottom:9px;border-bottom:1px solid #c9d6e4}
+.explorer-toolbar .btn{padding:6px 8px;font-size:11px}
+.explorer-path{margin:9px 0;padding:7px 9px;background:#f3f7fc;border:1px solid #c6d6e6;color:#24415f;overflow-wrap:anywhere}
+.file-list{display:flex;flex:1;flex-direction:column;gap:2px;min-height:0;overflow:auto}
+.file-row{display:grid;grid-template-columns:24px minmax(0,1fr) minmax(75px,auto);width:100%;gap:8px;align-items:center;text-align:left;border:1px solid transparent;background:transparent;color:#172b43;border-radius:2px;padding:7px 8px;font:12px Tahoma,Arial,sans-serif}
+.file-row-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-row-type{font-size:10px;color:#667b92}
+.file-row.selected{background:#cfe4fb!important;border-color:#7aa9d8}
+.file-row:focus-visible{outline:1px dotted #245edb;outline-offset:-3px}
+.explorer-empty{padding:24px 10px;text-align:center;color:#60758b}
+.explorer-status{flex:0 0 auto;margin-top:8px;padding-top:7px;border-top:1px solid #d8e2ed;color:#536b83;font-size:10px;overflow-wrap:anywhere}
+.editor-path-label{display:flex;align-items:center;gap:5px;font-size:11px;color:#536b83}
+.editor-path{width:min(230px,35vw);min-width:100px;padding:5px 7px;border:1px solid #9eb3c9;border-radius:2px;background:#fff;color:#172b43;font:11px Tahoma,Arial,sans-serif}
+@media(max-width:600px){
+ .xp-explorer.files{grid-template-columns:95px minmax(0,1fr)}
+ .explorer-sidebar{padding:8px 4px}
+ .explorer-place{padding:7px 4px;font-size:10px;overflow-wrap:anywhere}
+ .explorer-main{padding:7px}
+ .explorer-toolbar{gap:4px}
+ .explorer-toolbar .btn{padding:6px;font-size:10px}
+ .file-row{grid-template-columns:20px minmax(0,1fr);gap:5px;padding:8px 5px}
+ .file-row-type{display:none}
+ .editor-toolbar{flex-wrap:wrap}
+ .editor-path-label{width:100%}
+ .editor-path{flex:1;width:auto;min-width:0}
+}

@@ -87,3 +87,68 @@ test("desktop remains usable at a narrow mobile viewport", async ({ page }) => {
   expect(dimensions.desktop).toBeGreaterThan(0);
   expect(dimensions.desktop).toBeLessThanOrEqual(dimensions.viewport + 1);
 });
+
+
+test("File Manager supports local create, rename, copy, move, delete, and persistence", async ({ page }) => {
+  const prompts = ["Projects E2E", "sample.txt", "renamed.txt"];
+  page.on("dialog", async dialog => {
+    if (dialog.type() === "prompt") {
+      const answer = prompts.shift();
+      await dialog.accept(answer);
+    } else {
+      await dialog.accept();
+    }
+  });
+
+  await startDesktop(page);
+  await openFromStart(page, "My Computer");
+  const explorer = page.locator('.window[data-app="files"]');
+  await expect(explorer).toBeVisible();
+
+  await explorer.locator("[data-new-folder]").click();
+  await expect(explorer.locator('[data-file-path="Projects E2E"]')).toBeVisible();
+
+  await explorer.locator("[data-new-file]").click();
+  await expect(explorer.locator('[data-file-path="sample.txt"]')).toBeVisible();
+
+  await explorer.locator('[data-file-path="sample.txt"]').click();
+  await explorer.locator("[data-rename]").click();
+  await expect(explorer.locator('[data-file-path="renamed.txt"]')).toBeVisible();
+
+  await explorer.locator('[data-file-path="renamed.txt"]').click();
+  await explorer.locator("[data-copy]").click();
+  await explorer.locator("[data-paste]").click();
+  await expect(explorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
+
+  await explorer.locator('[data-file-path="renamed copy.txt"]').click();
+  await explorer.locator("[data-cut]").click();
+  await explorer.locator('[data-file-path="Projects E2E"]').dblclick();
+  await expect(explorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
+
+  await page.locator('.window[data-app="files"] [data-place=""]').click();
+  await explorer.locator('[data-file-path="renamed.txt"]').click();
+  await explorer.locator("[data-open-selected]").click();
+
+  const editor = page.locator('.window[data-app="editor"]');
+  await expect(editor).toBeVisible();
+  await expect(editor.locator("[data-editor-path]")).toHaveValue("renamed.txt");
+  await editor.locator("textarea").fill("Saved through File Manager");
+  await editor.locator("[data-save]").click();
+  await expect(page.locator("#notifications")).toContainText("Saved renamed.txt locally");
+
+  await page.goto("/?nosw=1");
+  await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
+  await openFromStart(page, "My Computer");
+  const reloadedExplorer = page.locator('.window[data-app="files"]');
+  await expect(reloadedExplorer.locator('[data-file-path="renamed.txt"]')).toBeVisible();
+  await expect(reloadedExplorer.locator('[data-file-path="Projects E2E"]')).toBeVisible();
+  await reloadedExplorer.locator('[data-file-path="renamed.txt"]').click();
+  await reloadedExplorer.locator("[data-open-selected]").click();
+  await expect(page.locator('.window[data-app="editor"] textarea')).toHaveValue("Saved through File Manager");
+
+  await reloadedExplorer.locator('[data-file-path="Projects E2E"]').dblclick();
+  await expect(reloadedExplorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
+  await reloadedExplorer.locator('[data-file-path="renamed copy.txt"]').click();
+  await reloadedExplorer.locator("[data-delete]").click();
+  await expect(reloadedExplorer.locator('[data-file-path="renamed copy.txt"]')).toHaveCount(0);
+});
