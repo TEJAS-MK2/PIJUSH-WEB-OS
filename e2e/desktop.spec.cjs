@@ -159,6 +159,8 @@ test("File Manager supports local create, rename, copy, move, delete, and persis
   await reloadedExplorer.locator("[data-open-selected]").click();
   await expect(page.locator('.window[data-app="editor"] textarea')).toHaveValue("Saved through File Manager");
 
+  checkpoint("closing Notepad before returning to Explorer");
+  await page.locator('.window[data-app="editor"] [data-close]').click();
   await reloadedExplorer.locator('[data-file-path="Projects E2E"]').dblclick();
   await expect(reloadedExplorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
   await reloadedExplorer.locator('[data-file-path="renamed copy.txt"]').click();
