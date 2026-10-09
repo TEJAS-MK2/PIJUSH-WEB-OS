@@ -20,7 +20,7 @@ A browser-based desktop environment built with vanilla HTML, CSS, and JavaScript
 - Display Properties with XP Blue, Silver, and Olive themes; selectable wallpapers and compact/classic taskbar
 - Internet Explorer-inspired start page with safe external-link handling
 - Desktop Gadgets for clock, workspace entries, process count, and network state
-- Installable PWA shell with a service worker and offline fallback
+- Installable PWA shell with a versioned service worker and offline fallback
 
 ### Virtual filesystem and recovery
 - IndexedDB-backed virtual filesystem for workspace files
