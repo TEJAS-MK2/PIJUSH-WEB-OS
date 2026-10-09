@@ -3,7 +3,7 @@ const DB_NAME="pijush-os",DB_VERSION=2,STORE="files",META="meta";
 const seed={"Desktop":{type:"dir"},"Documents":{type:"dir"},"Projects":{type:"dir"},"Downloads":{type:"dir"},"Documents/README.txt":{type:"file",content:"Welcome to PIJUSH OS.\n\nThis workspace is managed by WebKernel."},"notes.txt":{type:"file",content:"PIJUSH OS\nA browser-native operating system experiment."}};
 class EventBus{constructor(){this.map=new Map()}on(t,f){if(!this.map.has(t))this.map.set(t,new Set);this.map.get(t).add(f);return()=>this.map.get(t)?.delete(f)}emit(t,d){this.map.get(t)?.forEach(f=>{try{f(d)}catch{}})}}
 class FileSystem{
- constructor(){this.db=null;this.memory=new Map;this.ready=this.init()}
+ constructor(){this.db=null;this.memory=new Map;this.storageError=null;this.ready=this.init().catch(error=>{console.error("PIJUSH OS filesystem initialization failed; using temporary memory storage.",error);this.db=null;this.memory.clear();for(const[p,v]of Object.entries(seed))this.memory.set(p,v);this.storageError=error})}
  async init(){if(!("indexedDB"in window)){for(const [p,v]of Object.entries(seed))this.memory.set(p,v);return}
   this.db=await new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains(STORE))d.createObjectStore(STORE);if(!d.objectStoreNames.contains(META))d.createObjectStore(META)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
   if(await this.count()===0){await new Promise((resolve,reject)=>{const tx=this.db.transaction(STORE,"readwrite");const store=tx.objectStore(STORE);Object.entries(seed).forEach(([path,value])=>store.put(value,path));tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
