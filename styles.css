@@ -133,3 +133,7 @@ body{background:#245edb;color:var(--text)}
 :root[data-theme="olive"] .dock .xp-start{background:linear-gradient(#b5d77b,#568a28)}
 :root[data-taskbar="compact"] .dock{height:38px}
 :root[data-taskbar="compact"] .dock button{height:30px}
+
+.catalog-item{background:#f8f7f1;border:1px solid #b8c8d8;border-radius:3px;color:#172b43}
+.catalog-item .muted,.catalog-item small{color:#53677b}
+@media(max-width:600px){.dock .xp-start{margin-right:0;min-width:82px}.dock{gap:2px;padding-left:4px;padding-right:4px}}
