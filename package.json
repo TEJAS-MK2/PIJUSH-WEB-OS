@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/*.test.cjs",
-    "check": "node --check app.js && node --check kernel.js && node --check package-manager.js && node --check recovery.js && node --check system-center.js && node --check xp-suite.js && node --check sw.js && node --check tests/static-server.cjs && node --check playwright.config.cjs",
+    "check": "node --check app.js && node --check kernel.js && node --check package-manager.js && node --check recovery.js && node --check system-center.js && node --check xp-suite.js && node --check sw.js && node --check tests/static-server.cjs && node --check playwright.config.cjs && node --check e2e/desktop.spec.cjs",
     "test:e2e": "playwright test"
   },
   "devDependencies": {
