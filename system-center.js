@@ -42,5 +42,5 @@ function render(root,kernel,notify){
 }
 const api={render,validateSnapshotName,makeSnapshot,validateSnapshotRecord,MAX_SNAPSHOTS,MAX_SNAPSHOT_BYTES};
 if(typeof module!=="undefined"&&module.exports)module.exports=api;
-if(typeof window!=="undefined")window.PIJUSHSystemCenter=api;
+if(typeof window!=="undefined"){window.PIJUSHSystemCenter=api;diagnostics()}
 })();
