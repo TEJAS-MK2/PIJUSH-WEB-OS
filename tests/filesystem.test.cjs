@@ -76,3 +76,11 @@ test("filesystem supports local create, read, rename-by-copy, and delete primiti
   assert.equal(await kernel.fs.read("Projects/notes.txt"), null);
   assert.equal((await kernel.fs.read("Projects/renamed.txt")).content, "local content");
 });
+
+
+test("IndexedDB prefix listing includes the exact path as well as descendants", () => {
+  assert.match(
+    source,
+    /if\(!prefix\|\|c\.key===prefix\.slice\(0,-1\)\|\|c\.key\.startsWith\(prefix\)\)out\.push/,
+  );
+});
