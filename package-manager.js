@@ -24,6 +24,7 @@ function sandboxDocument(pkg,nonce){
  if(/<\/body\s*>/i.test(html))html=html.replace(/<\/body\s*>/i,bridge+"</body>");else html+=bridge;
  return html;
 }
-const api={validatePackage,sandboxDocument,allowedPermissions:[...ALLOWED],maxSourceBytes:MAX_SOURCE};
+function integrityPayload(pkg){const p=validatePackage(pkg);return JSON.stringify({manifest:p.manifest,html:p.html})}
+const api={validatePackage,sandboxDocument,integrityPayload,allowedPermissions:[...ALLOWED],maxSourceBytes:MAX_SOURCE};
 root.PIJUSHAppPackages=api;if(typeof module!=="undefined"&&module.exports)module.exports=api;
 })(typeof window!=="undefined"?window:globalThis);
