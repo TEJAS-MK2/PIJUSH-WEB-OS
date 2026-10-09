@@ -6,7 +6,7 @@ class FileSystem{
  constructor(){this.db=null;this.memory=new Map;this.ready=this.init()}
  async init(){if(!("indexedDB"in window)){for(const [p,v]of Object.entries(seed))this.memory.set(p,v);return}
   this.db=await new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains(STORE))d.createObjectStore(STORE);if(!d.objectStoreNames.contains(META))d.createObjectStore(META)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
-  if(await this.count()===0)for(const[p,v]of Object.entries(seed))await this.write(p,v)
+  if(await this.count()===0){await new Promise((resolve,reject)=>{const tx=this.db.transaction(STORE,"readwrite");const store=tx.objectStore(STORE);Object.entries(seed).forEach(([path,value])=>store.put(value,path));tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
  }
  count(){return this.db?new Promise((res,rej)=>{const r=this.db.transaction(STORE,"readonly").objectStore(STORE).count();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}):Promise.resolve(this.memory.size)}
  async write(path,value){await this.ready;path=this.normalize(path);if(!path)throw Error("Invalid path");if(!this.db){this.memory.set(path,structuredClone(value));return}return new Promise((res,rej)=>{const r=this.db.transaction(STORE,"readwrite").objectStore(STORE).put(structuredClone(value),path);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
