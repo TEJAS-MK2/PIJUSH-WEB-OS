@@ -10,11 +10,19 @@ A browser-native operating system interface built from scratch with vanilla HTML
 - Text editor
 - File manager
 - Calculator
-- System monitor
+- System monitor and integrated System Center
+- Named workspace snapshots with restore/export
+- Session diagnostics and exportable reports
 - Settings
 - Offline-capable PWA
 - Mobile/touch-friendly layout
 - GitHub Pages deployment via Actions
+
+## System Center
+
+Open **System Center** from the application launcher to inspect session uptime, active processes, workspace size, browser-reported storage usage, available runtime capabilities, and session diagnostics. CPU usage is not exposed by standard browser APIs, so the interface does not fabricate a CPU percentage.
+
+Create up to three named snapshots (8 MB each) stored separately from workspace files. Snapshots can be exported, restored, or deleted. Restoring replaces the current workspace, so export a backup first if you need to preserve current data. Diagnostic reports contain the current page session's events and can be exported as JSON. Browser storage quotas and persistence grants are controlled by the browser.
 
 ## Development
 Serve the repository with any static HTTP server, for example: python3 -m http.server 8080
