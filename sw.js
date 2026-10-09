@@ -1,5 +1,5 @@
-const CACHE="pijush-os-v9";
-const ASSETS=["./","./index.html","./styles.css?v=9","./app.js?v=9","./kernel.js?v=9","./package-manager.js?v=9","./recovery.js?v=9","./system-center.js?v=9","./xp-suite.js?v=9","./manifest.webmanifest","./favicon.svg"];
+const CACHE="pijush-os-v10";
+const ASSETS=["./","./index.html","./styles.css?v=10","./app.js?v=10","./kernel.js?v=10","./package-manager.js?v=10","./recovery.js?v=10","./system-center.js?v=10","./xp-suite.js?v=10","./manifest.webmanifest","./favicon.svg"];
 self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener("fetch",event=>{
