@@ -20,7 +20,7 @@ test("XP shell includes the Start menu, taskbar, clock, and desktop shortcuts", 
 });
 
 test("taskbar clock updates the visible dock clock, not the hidden topbar clock", () => {
-  assert.match(app, /const clockEl=\$\("#dock #clock"\)\|\|\$("#clock"\)/);
+  assert.match(app, /clockEl=\$\("#dock #clock"\)\|\|\$("#clock"\)/);
 });
 
 test("minimizing a window hands focus to another visible window", () => {
