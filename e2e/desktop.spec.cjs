@@ -24,6 +24,38 @@ test("desktop boots and exposes the XP-style Start menu and taskbar clock", asyn
   await expect(page.locator(".app-card")).toHaveCount(15);
 });
 
+test("Start menu closes with Escape and keeps its accessible expanded state synchronized", async ({ page }) => {
+  await startDesktop(page);
+  const start = page.locator("#dock .xp-start");
+  const menu = page.locator("#launcher");
+  await expect(start).toHaveAttribute("aria-expanded", "false");
+  await start.click();
+  await expect(menu).toBeVisible();
+  await expect(start).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#app-search")).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeHidden();
+  await expect(start).toHaveAttribute("aria-expanded", "false");
+  await expect(start).toBeFocused();
+});
+
+test("Display Properties applies and persists Luna theme and wallpaper choices", async ({ page }) => {
+  await startDesktop(page);
+  await openFromStart(page, "Display Properties");
+  const win = page.locator('.window[data-app="appearance"]');
+  await expect(win).toBeVisible();
+  await win.locator('[data-theme-choice="olive"]').click();
+  await win.locator('[data-wall-choice="blue"]').click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "olive");
+  await expect(page.locator("html")).toHaveAttribute("data-wallpaper", "blue");
+  await win.locator("[data-apply]").click();
+  await expect(page.locator("#notifications")).toContainText("preferences have been saved");
+  await page.goto("/?nosw=1");
+  await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "olive");
+  await expect(page.locator("html")).toHaveAttribute("data-wallpaper", "blue");
+});
+
 test("window minimize, taskbar restore, maximize, and close work", async ({ page }) => {
   await startDesktop(page);
   await openFromStart(page, "Calculator");
