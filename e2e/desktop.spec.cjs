@@ -1,7 +1,6 @@
 const { test, expect } = require("@playwright/test");
 
 async function startDesktop(page) {
-  checkpoint("reloading to verify persistence");
   await page.goto("/?nosw=1");
   await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
   await expect(page.locator("#dock .xp-start")).toBeVisible();
@@ -148,6 +147,7 @@ test("File Manager supports local create, rename, copy, move, delete, and persis
   await editor.locator("[data-save]").click();
   await expect(page.locator("#notifications")).toContainText("Saved renamed.txt locally");
 
+  checkpoint("reloading to verify persistence");
   await page.goto("/?nosw=1");
   await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
   await openFromStart(page, "My Computer");
