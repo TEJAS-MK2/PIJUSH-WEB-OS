@@ -94,7 +94,7 @@ npm run check
 ```
 
 - `npm test` runs the Node.js test suite in `tests/`.
-- `npm run check` performs JavaScript syntax checks on the application, kernel, package manager, recovery module, and System Center.
+- `npm run check` performs JavaScript syntax checks on the application, kernel, package manager, recovery module, System Center, and XP desktop suite.
 
 ## Deployment
 
