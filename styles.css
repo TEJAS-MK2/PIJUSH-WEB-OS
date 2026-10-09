@@ -240,3 +240,16 @@ html,body{background:#1673ce;color:var(--xp-text);font-family:Tahoma,"Segoe UI",
  .editor-path-label{width:100%}
  .editor-path{flex:1;width:auto;min-width:0}
 }
+
+/* Luna shell accessibility and interaction polish */
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+#dock .xp-start:focus-visible,.brand:focus-visible,.icon-btn:focus-visible,.dock button:focus-visible,.app-card:focus-visible,.start-links button:focus-visible{outline:2px solid #fff;outline-offset:1px}
+#app-search:focus-visible{outline:2px solid #ffd24a;outline-offset:2px}
+.launcher{isolation:isolate}
+.launcher[aria-label="Start menu"]{color:#172b43}
+.app-card[hidden]{display:none!important}
+:root[data-taskbar="compact"] .dock{height:38px;padding-top:2px;padding-bottom:2px}
+:root[data-taskbar="compact"] .dock .xp-start{height:32px;min-width:96px;font-size:14px}
+:root[data-taskbar="compact"] .dock #clock{font-size:10px}
+@media(max-width:600px){:root[data-taskbar="compact"] .dock{height:34px}:root[data-taskbar="compact"] .windows{bottom:34px}:root[data-taskbar="compact"] .launcher{bottom:34px}:root[data-taskbar="compact"] .dock .xp-start{height:29px;min-width:80px;font-size:13px}:root[data-taskbar="compact"] .dock #clock{min-width:54px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
