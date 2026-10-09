@@ -184,12 +184,13 @@ test("Settings exports a valid local backup and safely restores a selected backu
     ]
   };
   await settings.locator("[data-import]").click();
+  const importReload = page.waitForNavigation({ waitUntil: "domcontentloaded" });
   await settings.locator("[data-import-file]").setInputFiles({
     name: "pijush-os-test-backup.json",
     mimeType: "application/json",
     buffer: Buffer.from(JSON.stringify(imported))
   });
-  await expect(page.locator("#notifications")).toContainText("Restore complete");
+  await importReload;
   await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
   await openFromStart(page, "My Computer");
   const explorer = page.locator('.window[data-app="files"]');
@@ -216,7 +217,9 @@ test("System Center creates and restores a local snapshot after workspace change
   await explorer.locator("[data-new-file]").click();
   await expect(explorer.locator('[data-file-path="after-snapshot.txt"]')).toBeVisible();
 
+  const snapshotReload = page.waitForNavigation({ waitUntil: "domcontentloaded" });
   await snapshot.locator('[data-snap-action="restore"]').click();
+  await snapshotReload;
   await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
   await openFromStart(page, "My Computer");
   const restoredExplorer = page.locator('.window[data-app="files"]');
