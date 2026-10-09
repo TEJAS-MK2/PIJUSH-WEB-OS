@@ -152,3 +152,74 @@ test("File Manager supports local create, rename, copy, move, delete, and persis
   await expect(page.locator('.window[data-app="editor"] textarea')).toHaveValue("Saved through File Manager");
 
 });
+
+test("Settings exports a valid local backup and safely restores a selected backup", async ({ page }) => {
+  page.on("dialog", async dialog => {
+    if (dialog.type() === "confirm") await dialog.accept();
+    else await dialog.accept();
+  });
+  await startDesktop(page);
+  await openFromStart(page, "Settings");
+  const settings = page.locator('.window[data-app="settings"]');
+  await expect(settings).toBeVisible();
+
+  const downloadPromise = page.waitForEvent("download");
+  await settings.locator("[data-export]").click();
+  const download = await downloadPromise;
+  const stream = await download.createReadStream();
+  const chunks = [];
+  for await (const chunk of stream) chunks.push(chunk);
+  const exported = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+  expect(exported.format).toBe("pijush-os-backup");
+  expect(exported.version).toBe(1);
+  expect(exported.files.some(([path, value]) => path === "notes.txt" && value.type === "file")).toBe(true);
+
+  const imported = {
+    format: "pijush-os-backup",
+    version: 1,
+    createdAt: new Date().toISOString(),
+    files: [
+      ["Desktop", { type: "dir" }],
+      ["imported.txt", { type: "file", content: "Restored locally" }]
+    ]
+  };
+  await settings.locator("[data-import]").click();
+  await settings.locator("[data-import-file]").setInputFiles({
+    name: "pijush-os-test-backup.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(imported))
+  });
+  await expect(page.locator("#notifications")).toContainText("Restore complete");
+  await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
+  await openFromStart(page, "My Computer");
+  const explorer = page.locator('.window[data-app="files"]');
+  await expect(explorer.locator('[data-file-path="imported.txt"]')).toBeVisible();
+  await expect(explorer.locator('[data-file-path="notes.txt"]')).toHaveCount(0);
+});
+
+test("System Center creates and restores a local snapshot after workspace changes", async ({ page }) => {
+  page.on("dialog", async dialog => {
+    if (dialog.type() === "prompt") await dialog.accept("after-snapshot.txt");
+    else await dialog.accept();
+  });
+  await startDesktop(page);
+  await openFromStart(page, "Control Panel");
+  const center = page.locator('.window[data-app="systemcenter"]');
+  await expect(center).toBeVisible();
+  await center.locator("[data-snapshot-name]").fill("Before change E2E");
+  await center.locator(".sc-create button[type=submit]").click();
+  const snapshot = center.locator("[data-snapshot]").filter({ hasText: "Before change E2E" });
+  await expect(snapshot).toBeVisible();
+
+  await openFromStart(page, "My Computer");
+  const explorer = page.locator('.window[data-app="files"]');
+  await explorer.locator("[data-new-file]").click();
+  await expect(explorer.locator('[data-file-path="after-snapshot.txt"]')).toBeVisible();
+
+  await snapshot.locator('[data-snap-action="restore"]').click();
+  await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
+  await openFromStart(page, "My Computer");
+  const restoredExplorer = page.locator('.window[data-app="files"]');
+  await expect(restoredExplorer.locator('[data-file-path="after-snapshot.txt"]')).toHaveCount(0);
+});
+
