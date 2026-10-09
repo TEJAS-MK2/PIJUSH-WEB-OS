@@ -25,3 +25,24 @@ MIT
 ## WebKernel
 
 PIJUSH OS now has a browser-native kernel layer with an event bus, process manager, app registry, and IndexedDB-backed virtual filesystem. The desktop consumes these services instead of directly owning filesystem state.
+
+## Phase 4: App distribution and security
+
+Open **App Store** from the launcher to install the built-in **Hello World** and **Scratchpad Mini** demos, launch installed apps, or uninstall them. Local packages use the `.pijapp` extension and are JSON files with this shape:
+
+```json
+{
+  "manifest": {
+    "id": "sample-tool",
+    "name": "Sample Tool",
+    "version": "1.0.0",
+    "description": "A short description",
+    "permissions": []
+  },
+  "html": "<!doctype html><html><body><h1>Sample</h1></body></html>"
+}
+```
+
+The package manager validates IDs, semantic versions, permission names, duplicate permissions, and size limits. Third-party apps run in an iframe with `sandbox="allow-scripts"` (no same-origin privilege) and a restrictive Content Security Policy that blocks network connections. Host APIs are bridged through nonce-bound messages and are checked against explicitly granted permissions. App filesystem calls are namespaced under `AppData/<app-id>/`. Permissions are requested before first use; denying a request prevents launch. Treat packages as untrusted regardless of their source.
+
+Run `npm test` and `npm run check` before deploying. GitHub Actions runs both before the Pages deployment job.
