@@ -1,7 +1,7 @@
 const test=require("node:test");
 const assert=require("node:assert/strict");
 const {validatePackage,sandboxDocument}=require("../package-manager.js");
-const valid=()=>({manifest:{id:"hello-world",name:"Hello World",version:"1.0.0",description:"A demo",permissions:[]},html:"<!doctype html><html><body><h1>Hello</h1></body></html>"});
+const valid=()=>({manifest:{id:"hello-world",name:"Hello World",version:"1.0.0",description:"A demo",entrypoint:"index.html",permissions:[]},html:"<!doctype html><html><body><h1>Hello</h1></body></html>"});
 test("accepts a valid PIJAPP package",()=>{assert.equal(validatePackage(valid()).manifest.id,"hello-world")});
 test("rejects malformed and reserved identifiers",()=>{for(const id of ["Files","../bad","files","x","bad name"])assert.throws(()=>validatePackage({...valid(),manifest:{...valid().manifest,id}}))});
 test("rejects unknown permissions",()=>{const p=valid();p.manifest.permissions=["filesystem.root"];assert.throws(()=>validatePackage(p),/permission/i)});
@@ -15,3 +15,5 @@ const appSource=fs.readFileSync(require.resolve("../app.js"),"utf8");
 test("kernel refuses launch until requested permissions are explicitly granted",()=>{assert.match(kernelSource,/if\(missing\.length\)throw Error\("Permission required:/);assert.doesNotMatch(kernelSource,/if\(missing\.length\)this\.permissions\.grant/)});
 test("third-party apps use scripts-only iframe isolation and permission checks",()=>{assert.match(appSource,/sandbox="allow-scripts"/);assert.doesNotMatch(appSource,/sandbox="[^"]*allow-same-origin/);assert.match(appSource,/kernel\.permissions\.has\(id,d\.permission\)/);assert.match(appSource,/AppData\/"\+id/);});
 test("local package installation validates before persisting and has a size limit",()=>{assert.match(appSource,/PIJUSHAppPackages\.validatePackage\(raw\)/);assert.match(appSource,/f\.size>350\*1024/);assert.match(appSource,/confirm\("Install /);});
+
+test("entrypoint and integrity metadata are constrained",()=>{const p=valid();p.manifest.entrypoint="../outside.html";assert.throws(()=>validatePackage(p),/entrypoint/i);const q=valid();q.integrity={algorithm:"MD5",digest:"abc"};assert.throws(()=>validatePackage(q),/integrity/i)});
