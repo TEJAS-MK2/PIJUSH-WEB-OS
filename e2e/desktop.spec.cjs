@@ -50,11 +50,19 @@ test("window minimize, taskbar restore, maximize, and close work", async ({ page
 
 test("Notepad saves workspace content locally and keeps it after reload", async ({ page }) => {
   await startDesktop(page);
-  await openFromStart(page, "Notepad");
 
+  // Built-in apps request explicit filesystem permissions before mounting.
+  // Accept that expected prompt so the test exercises Notepad itself.
+  page.on("dialog", async dialog => {
+    await dialog.accept();
+  });
+
+  await openFromStart(page, "Notepad");
   const win = page.locator('.window[data-app="editor"]');
-  const editor = win.locator("textarea");
+  const editor = win.locator(".window-body textarea");
+  await expect(win).toBeVisible();
   await expect(editor).toBeVisible();
+
   const marker = "PIJUSH OS E2E persistence check";
   await editor.fill(marker);
   await win.locator("[data-save]").click();
@@ -63,7 +71,7 @@ test("Notepad saves workspace content locally and keeps it after reload", async 
   await page.goto("/?nosw=1");
   await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
   await openFromStart(page, "Notepad");
-  await expect(page.locator('.window[data-app="editor"] textarea')).toHaveValue(marker);
+  await expect(page.locator('.window[data-app="editor"] .window-body textarea')).toHaveValue(marker);
 });
 
 test("desktop remains usable at a narrow mobile viewport", async ({ page }) => {
