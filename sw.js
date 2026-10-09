@@ -1,1 +1,25 @@
-const CACHE="pijush-os-v5";const ASSETS=["./","./index.html","./styles.css","./app.js","./kernel.js","./package-manager.js","./manifest.webmanifest","./favicon.svg"];self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));self.addEventListener("fetch",e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match("./index.html")))));
+const CACHE="pijush-os-v6";
+const ASSETS=["./","./index.html","./styles.css?v=6","./app.js?v=6","./kernel.js?v=6","./package-manager.js?v=6","./manifest.webmanifest","./favicon.svg"];
+self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
+self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
+self.addEventListener("fetch",event=>{
+ const request=event.request;
+ if(request.method!=="GET")return;
+ const url=new URL(request.url);
+ if(url.origin!==self.location.origin)return;
+ const refreshFirst=request.mode==="navigate"||/\\.(?:js|css)$/.test(url.pathname);
+ if(refreshFirst){
+  event.respondWith(fetch(request,{cache:"no-store"}).then(response=>{
+   if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(request,copy)).catch(()=>{});}
+   return response;
+  }).catch(async()=>{
+   const cached=await caches.match(request);
+   return cached||caches.match("./index.html");
+  }));
+  return;
+ }
+ event.respondWith(caches.match(request).then(cached=>cached||fetch(request).then(response=>{
+  if(response.ok)caches.open(CACHE).then(cache=>cache.put(request,response.clone())).catch(()=>{});
+  return response;
+ }).catch(()=>caches.match("./index.html"))));
+});
