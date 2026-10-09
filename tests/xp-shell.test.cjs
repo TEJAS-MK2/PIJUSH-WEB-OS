@@ -43,3 +43,20 @@ test("XP visual overrides retain a responsive mobile layout and boot screen", ()
   assert.match(styles, /\.task-window/);
   assert.match(styles, /@media\s*\(max-width:\s*600px\)/);
 });
+
+test("Start menu supports accessible state, Escape dismissal, and focus-visible controls", () => {
+  assert.match(index, /aria-controls="launcher"/);
+  assert.match(index, /aria-expanded="false"/);
+  assert.match(index, /<label class="sr-only" for="app-search">/);
+  assert.match(app, /function setLauncherOpen\(open\)/);
+  assert.match(app, /e\.key==="Escape"/);
+  assert.match(app, /setAttribute\("aria-expanded",String\(open\)\)/);
+  assert.match(styles, /\.xp-start:focus-visible/);
+  assert.match(styles, /prefers-reduced-motion:\s*reduce/);
+});
+
+test("compact taskbar has desktop and mobile-specific Luna sizing", () => {
+  assert.match(styles, /data-taskbar="compact"\] \.dock/);
+  assert.match(styles, /data-taskbar="compact"\] \.windows/);
+  assert.match(styles, /data-taskbar="compact"\] \.launcher/);
+});
