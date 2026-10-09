@@ -15,8 +15,8 @@ A browser-based desktop environment built with vanilla HTML, CSS, and JavaScript
 - Text Editor, Terminal, and Calculator
 - System Monitor and System Center
 - Settings, Developer Mode, App Store, Display Properties, User Profile, Storage Center, Browser, and Desktop Gadgets
-- Responsive layout for desktop and mobile screens
-- Windows XP-inspired Luna styling, Start menu/taskbar, desktop shortcuts, and rolling-hills wallpaper
+- Responsive layout for desktop and mobile screens, with a compact Start menu and taskbar on narrow displays
+- Windows XP-inspired Luna shell with a green Start button, two-column Start menu, classic blue taskbar and tray clock, desktop shortcuts, rolling-hills wallpaper, and XP-style boot screen
 - Display Properties with XP Blue, Silver, and Olive themes; selectable wallpapers and compact/classic taskbar
 - Internet Explorer-inspired start page with safe external-link handling
 - Desktop Gadgets for clock, workspace entries, process count, and network state
