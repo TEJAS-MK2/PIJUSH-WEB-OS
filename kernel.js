@@ -49,7 +49,7 @@ class AppManager{
 }
 class WebKernel{
  constructor(){this.bus=new EventBus;this.fs=new FileSystem;this.permissions=new PermissionManager(this.bus);this.processes=new ProcessManager(this.bus);this.apps=new AppManager(this.bus,this.processes,this.permissions);this.ready=this.fs.ready.then(()=>{for(const a of[
- {id:"files",name:"Files",version:"1.1.0",permissions:["filesystem.read"]},
+ {id:"files",name:"Files",version:"1.2.0",permissions:["filesystem.read","filesystem.write","filesystem.delete"]},
  {id:"terminal",name:"Terminal",version:"1.1.0",permissions:["filesystem.read","filesystem.write"]},
  {id:"editor",name:"Editor",version:"1.1.0",permissions:["filesystem.read","filesystem.write"]},
  {id:"calculator",name:"Calculator",version:"1.1.0",permissions:[]},
