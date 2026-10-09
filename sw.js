@@ -7,7 +7,7 @@ self.addEventListener("fetch",event=>{
  if(request.method!=="GET")return;
  const url=new URL(request.url);
  if(url.origin!==self.location.origin)return;
- const refreshFirst=request.mode==="navigate"||/\\.(?:js|css)$/.test(url.pathname);
+ const refreshFirst=request.mode==="navigate"||url.pathname.endsWith(".js")||url.pathname.endsWith(".css");
  if(refreshFirst){
   event.respondWith(fetch(request,{cache:"no-store"}).then(response=>{
    if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(request,copy)).catch(()=>{});}
