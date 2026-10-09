@@ -1,6 +1,7 @@
 const { test, expect } = require("@playwright/test");
 
 async function startDesktop(page) {
+  checkpoint("reloading to verify persistence");
   await page.goto("/?nosw=1");
   await expect(page.locator("#boot")).toHaveClass(/done/, { timeout: 10_000 });
   await expect(page.locator("#dock .xp-start")).toBeVisible();
@@ -90,6 +91,9 @@ test("desktop remains usable at a narrow mobile viewport", async ({ page }) => {
 
 
 test("File Manager supports local create, rename, copy, move, delete, and persistence", async ({ page }) => {
+  page.on("pageerror", error => console.log("[File Manager E2E] page error:", error.message));
+  page.on("console", message => { if (message.type() === "error") console.log("[File Manager E2E] browser console:", message.text()); });
+  const checkpoint = message => console.log("[File Manager E2E]", message);
   const prompts = ["Projects E2E", "sample.txt", "renamed.txt"];
   page.on("dialog", async dialog => {
     if (dialog.type() === "prompt") {
@@ -100,33 +104,41 @@ test("File Manager supports local create, rename, copy, move, delete, and persis
     }
   });
 
+  checkpoint("starting desktop");
   await startDesktop(page);
+  checkpoint("opening My Computer");
   await openFromStart(page, "My Computer");
   const explorer = page.locator('.window[data-app="files"]');
   await expect(explorer).toBeVisible();
 
+  checkpoint("creating folder");
   await explorer.locator("[data-new-folder]").click();
   await expect(explorer.locator('[data-file-path="Projects E2E"]')).toBeVisible();
 
+  checkpoint("creating file");
   await explorer.locator("[data-new-file]").click();
   await expect(explorer.locator('[data-file-path="sample.txt"]')).toBeVisible();
 
   await explorer.locator('[data-file-path="sample.txt"]').click();
+  checkpoint("renaming file");
   await explorer.locator("[data-rename]").click();
   await expect(explorer.locator('[data-file-path="renamed.txt"]')).toBeVisible();
 
   await explorer.locator('[data-file-path="renamed.txt"]').click();
   await explorer.locator("[data-copy]").click();
+  checkpoint("copying file");
   await explorer.locator("[data-paste]").click();
   await expect(explorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
 
   await explorer.locator('[data-file-path="renamed copy.txt"]').click();
   await explorer.locator("[data-cut]").click();
+  checkpoint("moving file into folder");
   await explorer.locator('[data-file-path="Projects E2E"]').dblclick();
   await expect(explorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
 
   await page.locator('.window[data-app="files"] [data-place=""]').click();
   await explorer.locator('[data-file-path="renamed.txt"]').click();
+  checkpoint("opening file in Notepad");
   await explorer.locator("[data-open-selected]").click();
 
   const editor = page.locator('.window[data-app="editor"]');
@@ -143,12 +155,14 @@ test("File Manager supports local create, rename, copy, move, delete, and persis
   await expect(reloadedExplorer.locator('[data-file-path="renamed.txt"]')).toBeVisible();
   await expect(reloadedExplorer.locator('[data-file-path="Projects E2E"]')).toBeVisible();
   await reloadedExplorer.locator('[data-file-path="renamed.txt"]').click();
+  checkpoint("reopening saved file after reload");
   await reloadedExplorer.locator("[data-open-selected]").click();
   await expect(page.locator('.window[data-app="editor"] textarea')).toHaveValue("Saved through File Manager");
 
   await reloadedExplorer.locator('[data-file-path="Projects E2E"]').dblclick();
   await expect(reloadedExplorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
   await reloadedExplorer.locator('[data-file-path="renamed copy.txt"]').click();
+  checkpoint("deleting copied file");
   await reloadedExplorer.locator("[data-delete]").click();
   await expect(reloadedExplorer.locator('[data-file-path="renamed copy.txt"]')).toHaveCount(0);
 });
