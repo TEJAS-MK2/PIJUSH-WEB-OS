@@ -17,3 +17,6 @@ test("third-party apps use scripts-only iframe isolation and permission checks",
 test("local package installation validates before persisting and has a size limit",()=>{assert.match(appSource,/PIJUSHAppPackages\.validatePackage\(raw\)/);assert.match(appSource,/f\.size>350\*1024/);assert.match(appSource,/confirm\("Install /);});
 
 test("entrypoint and integrity metadata are constrained",()=>{const p=valid();p.manifest.entrypoint="../outside.html";assert.throws(()=>validatePackage(p),/entrypoint/i);const q=valid();q.integrity={algorithm:"MD5",digest:"abc"};assert.throws(()=>validatePackage(q),/integrity/i)});
+
+test("integrity payload includes the normalized manifest and permissions",()=>{const {integrityPayload}=require("../package-manager.js");const p=valid();const base=integrityPayload(p);const changed={...p,manifest:{...p.manifest,permissions:["filesystem.read"]}};assert.notEqual(integrityPayload(changed),base);assert.match(base,/"entrypoint":"index.html"/)});
+test("App Store exposes rollback and verifies packages before launch",()=>{const fs=require("node:fs");const source=fs.readFileSync(require.resolve("../app.js"),"utf8");assert.match(source,/data-rollback/);assert.match(source,/await verifyPackageIntegrity\(pkg\)/);assert.match(source,/AppBackups\//)});
