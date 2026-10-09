@@ -132,12 +132,13 @@ test("File Manager supports local create, rename, copy, move, delete, and persis
   await explorer.locator('[data-file-path="renamed copy.txt"]').click();
   await explorer.locator("[data-cut]").click();
   checkpoint("moving file into folder");
-  await explorer.locator('[data-file-path="Projects E2E"]').dblclick();
+  await explorer.locator('[data-file-path="Projects E2E"]').click();
+  await explorer.locator("[data-open-selected]").click();
   await expect(explorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
-  await explorer.locator('[data-file-path="Projects E2E/renamed copy.txt"]').click();
+  await explorer.locator('[data-file-path="renamed copy.txt"]').click();
   checkpoint("deleting copied file");
   await explorer.locator("[data-delete]").click();
-  await expect(explorer.locator('[data-file-path="Projects E2E/renamed copy.txt"]')).toHaveCount(0);
+  await expect(explorer.locator('[data-file-path="renamed copy.txt"]')).toHaveCount(0);
 
   await page.locator('.window[data-app="files"] [data-place=""]').click();
   await explorer.locator('[data-file-path="renamed.txt"]').click();
