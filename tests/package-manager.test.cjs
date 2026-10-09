@@ -8,3 +8,10 @@ test("rejects unknown permissions",()=>{const p=valid();p.manifest.permissions=[
 test("rejects oversized source and embedded browsing elements",()=>{const p=valid();p.html="x".repeat(256*1024+1);assert.throws(()=>validatePackage(p),/large/i);const q=valid();q.html="<iframe src='https://example.com'></iframe>";assert.throws(()=>validatePackage(q),/elements/i)});
 test("rejects duplicate permissions and invalid versions",()=>{const p=valid();p.manifest.permissions=["filesystem.read","filesystem.read"];assert.throws(()=>validatePackage(p));const q=valid();q.manifest.version="latest";assert.throws(()=>validatePackage(q),/Version/i)});
 test("sandbox document applies CSP and nonce-bound parent bridge",()=>{const p=validatePackage(valid());const html=sandboxDocument(p,"test-nonce");assert.match(html,/Content-Security-Policy/);assert.match(html,/connect-src 'none'/);assert.match(html,/channel:"pijush-app"/);assert.doesNotMatch(html,/allow-same-origin/);assert.match(html,/test-nonce/);});
+
+const fs=require("node:fs");
+const kernelSource=fs.readFileSync(require.resolve("../kernel.js"),"utf8");
+const appSource=fs.readFileSync(require.resolve("../app.js"),"utf8");
+test("kernel refuses launch until requested permissions are explicitly granted",()=>{assert.match(kernelSource,/if\(missing\.length\)throw Error\("Permission required:/);assert.doesNotMatch(kernelSource,/if\(missing\.length\)this\.permissions\.grant/)});
+test("third-party apps use scripts-only iframe isolation and permission checks",()=>{assert.match(appSource,/sandbox="allow-scripts"/);assert.doesNotMatch(appSource,/sandbox="[^"]*allow-same-origin/);assert.match(appSource,/kernel\.permissions\.has\(id,d\.permission\)/);assert.match(appSource,/AppData\/"+id/);});
+test("local package installation validates before persisting and has a size limit",()=>{assert.match(appSource,/PIJUSHAppPackages\.validatePackage\(raw\)/);assert.match(appSource,/f\.size>350\*1024/);assert.match(appSource,/confirm\("Install /);});
