@@ -127,6 +127,10 @@ test("File Manager supports local create, rename, copy, move, delete, and persis
   await explorer.locator("[data-copy]").click();
   checkpoint("copying file");
   await explorer.locator("[data-paste]").click();
+  checkpoint("after paste path=" + await explorer.locator("[data-explorer-path]").innerText()
+    + " status=" + await explorer.locator("[data-explorer-status]").innerText()
+    + " rows=" + JSON.stringify(await explorer.locator("[data-file-path]").evaluateAll(rows => rows.map(row => ({path: row.dataset.filePath, type: row.dataset.fileType})))
+    + " notifications=" + await page.locator("#notifications").innerText());
   await expect(explorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
 
   await explorer.locator('[data-file-path="renamed copy.txt"]').click();
