@@ -198,3 +198,10 @@ html,body{background:#1673ce;color:var(--xp-text);font-family:Tahoma,"Segoe UI",
 .window:not(.active) .titlebar{background:linear-gradient(180deg,#9abbe7,#6f95c9 50%,#587db5 51%,#8ba9d6);border-color:#718db5}
 .window:not(.active) .win-controls button{filter:saturate(.55);opacity:.9}
 @media(prefers-reduced-motion:reduce){.xp-boot-progress span{animation:none;transform:translateX(80%)}.boot{transition:none}}
+
+.task-buttons{display:flex;align-items:center;gap:3px;min-width:0;max-width:min(52vw,680px);overflow-x:auto;scrollbar-width:none}
+.task-buttons::-webkit-scrollbar{display:none}
+.task-window{width:auto!important;min-width:100px;max-width:180px;height:29px!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;padding:0 9px!important;font:11px Tahoma,Arial,sans-serif!important;background:linear-gradient(#3d7ce2,#1a4eae)!important;border:1px solid #174ba9!important;border-top-color:#7fb2ff!important;box-shadow:inset 1px 0 rgba(255,255,255,.18);border-radius:2px!important}
+.task-window.selected{background:linear-gradient(#123e93,#1e55b7)!important;box-shadow:inset 1px 1px 3px rgba(0,0,0,.4);border-color:#0c347f!important}
+.task-window.minimized{opacity:.8}
+@media(max-width:600px){.task-buttons{max-width:32vw}.task-window{min-width:64px;max-width:90px;padding:0 4px!important;font-size:10px!important}}
