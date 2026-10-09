@@ -127,9 +127,9 @@ test("File Manager supports local create, rename, copy, move, delete, and persis
   await explorer.locator("[data-copy]").click();
   checkpoint("copying file");
   await explorer.locator("[data-paste]").click();
-  checkpoint("after paste path=" + await explorer.locator("[data-explorer-path]").innerText()
+  checkpoint("after copy paste path=" + await explorer.locator("[data-explorer-path]").innerText()
     + " status=" + await explorer.locator("[data-explorer-status]").innerText()
-    + " rows=" + JSON.stringify(await explorer.locator("[data-file-path]").evaluateAll(rows => rows.map(row => ({path: row.dataset.filePath, type: row.dataset.fileType})))
+    + " rows=" + JSON.stringify(await explorer.locator("[data-file-path]").evaluateAll(rows => rows.map(row => ({path: row.dataset.filePath, type: row.dataset.fileType}))))
     + " notifications=" + await page.locator("#notifications").innerText());
   await expect(explorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
 
@@ -139,6 +139,10 @@ test("File Manager supports local create, rename, copy, move, delete, and persis
   await explorer.locator('[data-file-path="Projects E2E"]').click();
   await explorer.locator("[data-open-selected]").click();
   await explorer.locator("[data-paste]").click();
+  checkpoint("after move paste path=" + await explorer.locator("[data-explorer-path]").innerText()
+    + " status=" + await explorer.locator("[data-explorer-status]").innerText()
+    + " rows=" + JSON.stringify(await explorer.locator("[data-file-path]").evaluateAll(rows => rows.map(row => ({path: row.dataset.filePath, type: row.dataset.fileType}))))
+    + " notifications=" + await page.locator("#notifications").innerText());
   await expect(explorer.locator('[data-file-path="renamed copy.txt"]')).toBeVisible();
   await explorer.locator('[data-file-path="renamed copy.txt"]').click();
   checkpoint("deleting copied file");
