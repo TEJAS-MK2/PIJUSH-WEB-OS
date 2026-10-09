@@ -216,6 +216,7 @@ test("System Center creates and restores a local snapshot after workspace change
   const explorer = page.locator('.window[data-app="files"]');
   await explorer.locator("[data-new-file]").click();
   await expect(explorer.locator('[data-file-path="after-snapshot.txt"]')).toBeVisible();
+  await explorer.locator("[data-close]").click();
 
   const snapshotReload = page.waitForNavigation({ waitUntil: "domcontentloaded" });
   await snapshot.locator('[data-snap-action="restore"]').click();
