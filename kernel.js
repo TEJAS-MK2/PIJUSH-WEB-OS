@@ -40,7 +40,7 @@ class AppManager{
  uninstall(id){if(!this.apps.delete(id))return false;this.permissions.reset(id);for(const p of this.pm.list())if(p.appId===id)this.pm.kill(p.pid);this.bus.emit("app:uninstall",{id});return true}
  get(id){return this.apps.get(id)||null}
  list(){return[...this.apps.values()].map(a=>({...a,permissions:[...(a.permissions||[])]}))}
- launch(id){const a=this.get(id);if(!a)throw Error("Application not found");const missing=this.permissions.request(id,a.permissions||[]);if(missing.length)this.permissions.grant(id,missing);const p=this.pm.spawn(a.name,"app",id);this.bus.emit("app:launch",{app:a,process:p});return p}
+ launch(id){const a=this.get(id);if(!a)throw Error("Application not found");const missing=this.permissions.request(id,a.permissions||[]);if(missing.length)throw Error("Permission required: "+missing.join(", "));const p=this.pm.spawn(a.name,"app",id);this.bus.emit("app:launch",{app:a,process:p});return p}
 }
 class WebKernel{
  constructor(){this.bus=new EventBus;this.fs=new FileSystem;this.permissions=new PermissionManager(this.bus);this.processes=new ProcessManager(this.bus);this.apps=new AppManager(this.bus,this.processes,this.permissions);this.ready=this.fs.ready.then(()=>{for(const a of[
