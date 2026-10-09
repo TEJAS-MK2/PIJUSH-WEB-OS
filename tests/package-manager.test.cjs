@@ -23,3 +23,7 @@ test("App Store exposes rollback and verifies packages before launch",()=>{const
 
 test("fresh IndexedDB initialization seeds directly without waiting on its own ready promise",()=>{const fs=require("node:fs");const source=fs.readFileSync(require.resolve("../kernel.js"),"utf8");assert.doesNotMatch(source,/if\(await this\.count\(\)===0\)for\(const\[p,v\]of Object\.entries\(seed\)\)await this\.write\(p,v\)/);assert.match(source,/if\(await this\.count\(\)===0\)\{await new Promise/);assert.match(source,/store\.put\(value,path\)/)});
 test("app install uses the current full-package checksum helper",()=>{assert.match(appSource,/const digest=await digestPackage\(pkg\)/);assert.doesNotMatch(appSource,/digestHtml\(/)});
+
+
+test("filesystem initialization failure falls back to seeded memory storage",()=>{assert.match(kernelSource,/this\.ready=this\.init\(\)\.catch\(error=>/);assert.match(kernelSource,/this\.db=null;this\.memory\.clear\(\)/);assert.match(kernelSource,/this\.storageError=error/)});
+test("boot watchdog reports a kernel that never becomes ready",()=>{assert.match(appSource,/bootWatchdog/);assert.match(appSource,/kernel readiness has not completed/);assert.match(appSource,/kernelReady\.then\([\s\S]*?\.catch\(error=>/)});
