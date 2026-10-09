@@ -1,6 +1,6 @@
 (()=>{"use strict";
 const MAX_SNAPSHOTS=3,MAX_SNAPSHOT_BYTES=8*1024*1024;
-const bytesOf=s=>new TextEncoder().encode(s).length;
+const bytesOf=s=>typeof TextEncoder!=="undefined"?new TextEncoder().encode(s).length:unescape(encodeURIComponent(s)).length;
 function validateSnapshotName(name){if(typeof name!=="string")throw Error("Snapshot name must be text");const clean=name.trim();if(!clean||clean.length>48||/[\u0000-\u001f\u007f]/.test(clean))throw Error("Use a snapshot name from 1 to 48 characters without control characters");return clean}
 function makeSnapshot(name,backup,createdAt=new Date().toISOString()){
  name=validateSnapshotName(name);if(typeof backup!=="string")throw Error("Snapshot backup is invalid");
