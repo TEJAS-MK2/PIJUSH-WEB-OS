@@ -1,0 +1,10 @@
+const test=require("node:test");
+const assert=require("node:assert/strict");
+const {validatePackage,sandboxDocument}=require("../package-manager.js");
+const valid=()=>({manifest:{id:"hello-world",name:"Hello World",version:"1.0.0",description:"A demo",permissions:[]},html:"<!doctype html><html><body><h1>Hello</h1></body></html>"});
+test("accepts a valid PIJAPP package",()=>{assert.equal(validatePackage(valid()).manifest.id,"hello-world")});
+test("rejects malformed and reserved identifiers",()=>{for(const id of ["Files","../bad","files","x","bad name"])assert.throws(()=>validatePackage({...valid(),manifest:{...valid().manifest,id}}))});
+test("rejects unknown permissions",()=>{const p=valid();p.manifest.permissions=["filesystem.root"];assert.throws(()=>validatePackage(p),/permission/i)});
+test("rejects oversized source and embedded browsing elements",()=>{const p=valid();p.html="x".repeat(256*1024+1);assert.throws(()=>validatePackage(p),/large/i);const q=valid();q.html="<iframe src='https://example.com'></iframe>";assert.throws(()=>validatePackage(q),/elements/i)});
+test("rejects duplicate permissions and invalid versions",()=>{const p=valid();p.manifest.permissions=["filesystem.read","filesystem.read"];assert.throws(()=>validatePackage(p));const q=valid();q.manifest.version="latest";assert.throws(()=>validatePackage(q),/Version/i)});
+test("sandbox document applies CSP and nonce-bound parent bridge",()=>{const p=validatePackage(valid());const html=sandboxDocument(p,"test-nonce");assert.match(html,/Content-Security-Policy/);assert.match(html,/connect-src 'none'/);assert.match(html,/sandbox bridge/===null?/$^/:/channel:"pijush-app"/);assert.match(html,/test-nonce/);});
