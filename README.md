@@ -14,8 +14,12 @@ A browser-based desktop environment built with vanilla HTML, CSS, and JavaScript
 - File Manager and virtual workspace
 - Text Editor, Terminal, and Calculator
 - System Monitor and System Center
-- Settings, Developer Mode, and App Store
-- Responsive layout for desktop and mobile screens\n- Windows XP-inspired Luna styling, Start menu/taskbar, desktop shortcuts, and rolling-hills wallpaper\n- Display Properties with XP Blue, Silver, and Olive themes; selectable wallpapers and compact/classic taskbar\n- Internet Explorer-inspired start page with safe external-link handling\n- Desktop Gadgets for clock, workspace entries, process count, and network state
+- Settings, Developer Mode, App Store, Display Properties, User Profile, Storage Center, Browser, and Desktop Gadgets
+- Responsive layout for desktop and mobile screens
+- Windows XP-inspired Luna styling, Start menu/taskbar, desktop shortcuts, and rolling-hills wallpaper
+- Display Properties with XP Blue, Silver, and Olive themes; selectable wallpapers and compact/classic taskbar
+- Internet Explorer-inspired start page with safe external-link handling
+- Desktop Gadgets for clock, workspace entries, process count, and network state
 - Installable PWA shell with a service worker and offline fallback
 
 ### Virtual filesystem and recovery
@@ -37,18 +41,15 @@ Open **System Center** from the application launcher for a live view of:
 
 The diagnostics panel can export a JSON report for troubleshooting. Its log is session-local and is not a remote monitoring service. Standard browser APIs do not expose reliable system CPU usage, so PIJUSH OS does not display a fabricated CPU percentage.
 
-### Accounts and cloud sync
+### Local storage and backups
 
-- Local display-name and presence profile stored in the browser workspace
-- Sync Center supports email magic-link sign-in through Supabase Auth
-- Authenticated users can upload a workspace backup to the cloud and restore it on another device
-- Cloud data is stored in `public.pijush_os_cloud_sync`, keyed to the authenticated user's UUID
-- Row Level Security policies restrict each user to their own row; the table is not readable by anonymous users
-- Portable sync pack export/import remains available for manual transfer without signing in
+- Workspace files and app data stay in the browser's IndexedDB-backed virtual filesystem on this device
+- No cloud authentication, remote account, or cloud database is used by the app
+- Storage Center reports browser-reported usage/quota when available and can request persistent storage
+- Export/import a local JSON backup to move data manually between devices
+- Browser persistent storage is not guaranteed; site data can still be removed by browser settings or device cleanup
 
-**One-time Auth setup:** in the Supabase dashboard, open **Authentication → URL Configuration** and add `https://tejas-mk2.github.io/PIJUSH-WEB-OS/` to the allowed redirect URLs. Email sign-in can fail or redirect elsewhere until that URL is allowed. The client uses a publishable key only; no service-role key is shipped to the browser.
-
-Cloud backups contain the virtual workspace and may include personal files or installed app packages. They are not end-to-end encrypted by PIJUSH OS. Use a private account, sign out on shared devices, and keep independent exports of important files. Cloud restore replaces the current local workspace, so it asks for confirmation first.
+Backups may contain personal files and installed app packages, so keep exported JSON files private. Restoring a backup replaces the current virtual workspace and asks for confirmation first. PIJUSH OS does not upload the backup anywhere.
 
 ### Snapshot Manager
 System Center supports up to **3 named snapshots**, each limited to **8 MB**. Snapshots can be created, exported, restored, and deleted. When IndexedDB is available, snapshot records are stored separately from virtual workspace files. If the app falls back to memory storage, snapshots are temporary and will not survive a page reload.
@@ -109,7 +110,8 @@ To check the current build, open the [Actions runs](https://github.com/TEJAS-MK2
 - `kernel.js` — event bus, process manager, app registry, and virtual filesystem
 - `package-manager.js` — package validation, installation, and sandbox integration
 - `recovery.js` — backup creation and validation
-- `system-center.js` — diagnostics, runtime overview, and snapshot UI\n- `xp-suite.js` — XP-inspired appearance, local profile, portable sync pack, browser start page, and desktop gadgets
+- `system-center.js` — diagnostics, runtime overview, and snapshot UI
+- `xp-suite.js` — XP-inspired appearance, local profile, on-device storage controls, backup import/export, browser start page, and desktop gadgets
 - `sw.js` — service worker and static-asset cache
 - `tests/` — automated tests
 - `.github/workflows/deploy.yml` — test and GitHub Pages deployment pipeline
