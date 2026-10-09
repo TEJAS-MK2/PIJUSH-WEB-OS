@@ -1,6 +1,6 @@
 # PIJUSH OS
 
-A browser-based desktop environment built with vanilla HTML, CSS, and JavaScript. PIJUSH OS runs as a static web app and progressive web app (PWA), with a windowed desktop, built-in utilities, a virtual filesystem, and a small sandboxed app-packaging system.
+A browser-based desktop environment built with vanilla HTML, CSS, and JavaScript, styled with a Windows XP Luna-inspired desktop: blue title bars, a green Start button, desktop shortcuts, classic display properties, and Bliss-inspired rolling hills. PIJUSH OS runs as a static web app and progressive web app (PWA), with built-in utilities, a virtual filesystem, and sandboxed app packages.
 
 **Live site:** https://tejas-mk2.github.io/PIJUSH-WEB-OS/  
 **Source:** https://github.com/TEJAS-MK2/PIJUSH-WEB-OS  
@@ -15,7 +15,7 @@ A browser-based desktop environment built with vanilla HTML, CSS, and JavaScript
 - Text Editor, Terminal, and Calculator
 - System Monitor and System Center
 - Settings, Developer Mode, and App Store
-- Responsive layout for desktop and mobile screens
+- Responsive layout for desktop and mobile screens\n- Windows XP-inspired Luna styling, Start menu/taskbar, desktop shortcuts, and rolling-hills wallpaper\n- Display Properties with XP Blue, Silver, and Olive themes; selectable wallpapers and compact/classic taskbar\n- Internet Explorer-inspired start page with safe external-link handling\n- Desktop Gadgets for clock, workspace entries, process count, and network state
 - Installable PWA shell with a service worker and offline fallback
 
 ### Virtual filesystem and recovery
@@ -37,7 +37,7 @@ Open **System Center** from the application launcher for a live view of:
 
 The diagnostics panel can export a JSON report for troubleshooting. Its log is session-local and is not a remote monitoring service. Standard browser APIs do not expose reliable system CPU usage, so PIJUSH OS does not display a fabricated CPU percentage.
 
-### Snapshot Manager
+### User profile and portable sync\n\n- Local display-name and presence profile stored in the browser workspace\n- Sync Center can export/import a portable workspace pack for manual device-to-device transfer\n- Imports validate the embedded PIJUSH backup format before asking to replace the destination workspace\n\n**Cloud sync limitation:** this repository is a static GitHub Pages app and has no configured remote authentication or database endpoint. The sync pack does not upload data automatically and is not encrypted. Keep it private. True cross-device automatic sync requires a separately configured backend and authenticated access controls. The local profile is not a login account and does not isolate multiple users.\n\n### Snapshot Manager
 System Center supports up to **3 named snapshots**, each limited to **8 MB**. Snapshots can be created, exported, restored, and deleted. When IndexedDB is available, snapshot records are stored separately from virtual workspace files. If the app falls back to memory storage, snapshots are temporary and will not survive a page reload.
 
 Restoring a snapshot replaces the current virtual workspace, including files and stored app data represented in the backup. Export a current backup first if you need to keep the latest state. Snapshots are a convenience for recovery, not a substitute for downloading an independent backup.
@@ -96,7 +96,7 @@ To check the current build, open the [Actions runs](https://github.com/TEJAS-MK2
 - `kernel.js` — event bus, process manager, app registry, and virtual filesystem
 - `package-manager.js` — package validation, installation, and sandbox integration
 - `recovery.js` — backup creation and validation
-- `system-center.js` — diagnostics, runtime overview, and snapshot UI
+- `system-center.js` — diagnostics, runtime overview, and snapshot UI\n- `xp-suite.js` — XP-inspired appearance, local profile, portable sync pack, browser start page, and desktop gadgets
 - `sw.js` — service worker and static-asset cache
 - `tests/` — automated tests
 - `.github/workflows/deploy.yml` — test and GitHub Pages deployment pipeline
