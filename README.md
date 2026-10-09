@@ -37,7 +37,20 @@ Open **System Center** from the application launcher for a live view of:
 
 The diagnostics panel can export a JSON report for troubleshooting. Its log is session-local and is not a remote monitoring service. Standard browser APIs do not expose reliable system CPU usage, so PIJUSH OS does not display a fabricated CPU percentage.
 
-### User profile and portable sync\n\n- Local display-name and presence profile stored in the browser workspace\n- Sync Center can export/import a portable workspace pack for manual device-to-device transfer\n- Imports validate the embedded PIJUSH backup format before asking to replace the destination workspace\n\n**Cloud sync limitation:** this repository is a static GitHub Pages app and has no configured remote authentication or database endpoint. The sync pack does not upload data automatically and is not encrypted. Keep it private. True cross-device automatic sync requires a separately configured backend and authenticated access controls. The local profile is not a login account and does not isolate multiple users.\n\n### Snapshot Manager
+### Accounts and cloud sync
+
+- Local display-name and presence profile stored in the browser workspace
+- Sync Center supports email magic-link sign-in through Supabase Auth
+- Authenticated users can upload a workspace backup to the cloud and restore it on another device
+- Cloud data is stored in `public.pijush_os_cloud_sync`, keyed to the authenticated user's UUID
+- Row Level Security policies restrict each user to their own row; the table is not readable by anonymous users
+- Portable sync pack export/import remains available for manual transfer without signing in
+
+**One-time Auth setup:** in the Supabase dashboard, open **Authentication → URL Configuration** and add `https://tejas-mk2.github.io/PIJUSH-WEB-OS/` to the allowed redirect URLs. Email sign-in can fail or redirect elsewhere until that URL is allowed. The client uses a publishable key only; no service-role key is shipped to the browser.
+
+Cloud backups contain the virtual workspace and may include personal files or installed app packages. They are not end-to-end encrypted by PIJUSH OS. Use a private account, sign out on shared devices, and keep independent exports of important files. Cloud restore replaces the current local workspace, so it asks for confirmation first.
+
+### Snapshot Manager
 System Center supports up to **3 named snapshots**, each limited to **8 MB**. Snapshots can be created, exported, restored, and deleted. When IndexedDB is available, snapshot records are stored separately from virtual workspace files. If the app falls back to memory storage, snapshots are temporary and will not survive a page reload.
 
 Restoring a snapshot replaces the current virtual workspace, including files and stored app data represented in the backup. Export a current backup first if you need to keep the latest state. Snapshots are a convenience for recovery, not a substitute for downloading an independent backup.
