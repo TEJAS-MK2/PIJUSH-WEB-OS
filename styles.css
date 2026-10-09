@@ -182,3 +182,19 @@ html,body{background:#1673ce;color:var(--xp-text);font-family:Tahoma,"Segoe UI",
 .xp-page{font-family:Tahoma,Arial,sans-serif}
 @media(max-width:600px){.desktop-shortcuts{top:8px;left:5px;gap:3px}.desktop-shortcuts button{width:75px;min-height:68px}.desktop-shortcuts button span{font-size:28px}.dock{height:40px}.windows{bottom:40px}.dock .xp-start{min-width:85px;padding-left:9px;font-size:14px}.dock button{width:34px;font-size:15px}.dock .tray-network{display:none}.dock #clock{min-width:58px;font-size:10px;padding:0 5px}.launcher{bottom:40px;width:min(calc(100vw - 4px),470px);grid-template-columns:minmax(0,1fr) 112px}.app-grid{grid-template-columns:1fr;max-height:48vh}.app-card{min-height:36px}.app-icon{font-size:20px}.start-links button{font-size:10px;padding:3px}.window{height:calc(100vh - 58px);width:calc(100vw - 12px);left:6px!important;top:6px!important}}
 @media(max-width:370px){.dock button:nth-of-type(n+5):not(.xp-start):not(.tray-network){display:none}.start-links{padding:4px}.launcher{grid-template-columns:minmax(0,1fr) 100px}}
+
+/* XP-inspired startup screen */
+.xp-boot{background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;color:#fff;font-family:Tahoma,Arial,sans-serif}
+.xp-boot-logo{display:flex;flex-direction:column;align-items:flex-start;min-width:255px}
+.xp-boot-logo>span{font-size:14px;letter-spacing:.02em;color:#eee;margin-left:3px;margin-bottom:1px}
+.xp-boot-logo strong{font-family:Tahoma,Arial,sans-serif;font-size:37px;letter-spacing:-2px;line-height:1.05;font-weight:500;color:#f4f4f4;text-shadow:0 1px 2px #555}
+.xp-boot-logo strong i{font-style:normal;color:#f0a13a;font-weight:700;letter-spacing:-2px}
+.xp-flag{display:inline-block;margin-left:5px;color:#e8d348;font-size:18px;vertical-align:top;text-shadow:2px 1px #d52e25,-2px -1px #2b83df}
+.xp-boot-logo small{margin-top:9px;color:#b6b6b6;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.xp-boot-progress{width:156px;height:12px;padding:2px;border:1px solid #8b8b8b;border-radius:2px;overflow:hidden;background:#101010}
+.xp-boot-progress span{display:block;width:36%;height:100%;border-radius:1px;background:linear-gradient(90deg,#2462c4,#4b9cff,#2462c4);animation:xpboot 1.5s ease-in-out infinite}
+.xp-boot .boot-status{position:absolute;top:calc(50% + 92px);color:#aaa;font-size:11px}
+@keyframes xpboot{0%{transform:translateX(-110%)}100%{transform:translateX(390%)}}
+.window:not(.active) .titlebar{background:linear-gradient(180deg,#9abbe7,#6f95c9 50%,#587db5 51%,#8ba9d6);border-color:#718db5}
+.window:not(.active) .win-controls button{filter:saturate(.55);opacity:.9}
+@media(prefers-reduced-motion:reduce){.xp-boot-progress span{animation:none;transform:translateX(80%)}.boot{transition:none}}
